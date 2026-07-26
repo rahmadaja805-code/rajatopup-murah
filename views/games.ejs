@@ -1,0 +1,53 @@
+<%- include("partials/header") %>
+<%- include("partials/navbar") %>
+
+<section class="games-page">
+
+    <div class="container">
+
+        <div class="section-title">
+            <h1>Pilih Game</h1>
+            <p>Pilih game favoritmu untuk melakukan top up.</p>
+        </div>
+
+        <div class="games-grid">
+
+            <% products.forEach(game => { %>
+
+                <div class="game-card">
+
+                    <img
+                        src="<%= game.image %>"
+                        alt="<%= game.name %>"
+                        class="game-image"
+                    >
+
+                    <div class="game-content">
+
+                        <h2><%= game.name %></h2>
+
+                        <p>
+                            <%= game.products.length %> Produk Tersedia
+                        </p>
+
+                        <a
+                            href="/product/<%= game.slug %>"
+                            class="btn-game">
+
+                            Top Up Sekarang
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            <% }) %>
+
+        </div>
+
+    </div>
+
+</section>
+
+<%- include("partials/footer") %>

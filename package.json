@@ -1,0 +1,32 @@
+{
+  "name": "manual-topup",
+  "version": "1.0.0",
+  "description": "Manual Top Up Website by RajaTopUp",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "topup",
+    "games",
+    "manual",
+    "rajatopup"
+  ],
+  "author": "RajaTopUp",
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

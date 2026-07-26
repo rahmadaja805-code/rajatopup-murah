@@ -1,0 +1,67 @@
+<%- include("../partials/header") %>
+<%- include("../partials/navbar") %>
+
+<section class="hero">
+
+<div class="container">
+
+<h1>Dashboard Admin</h1>
+
+<br>
+
+<div class="card">
+
+<h3>Daftar Pesanan</h3>
+
+<br>
+
+<table style="width:100%;border-collapse:collapse">
+
+<thead>
+
+<tr>
+<th>Invoice</th>
+<th>Game</th>
+<th>Produk</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<% if(orders.length===0){ %>
+
+<tr>
+<td colspan="4">Belum ada pesanan.</td>
+</tr>
+
+<% } %>
+
+<% orders.forEach(order=>{ %>
+
+<tr>
+
+<td><%= order.invoice %></td>
+
+<td><%= order.game %></td>
+
+<td><%= order.product %></td>
+
+<td><%= order.status %></td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<%- include("../partials/footer") %>

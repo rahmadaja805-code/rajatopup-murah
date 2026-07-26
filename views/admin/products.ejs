@@ -1,0 +1,50 @@
+<%- include("../partials/header") %>
+<%- include("../partials/navbar") %>
+
+<section class="hero">
+
+<div class="container">
+
+<h1>Kelola Produk</h1>
+
+<div class="feature-grid">
+
+<% products.forEach(game=>{ %>
+
+<div class="card">
+
+<h2><%= game.name %></h2>
+
+<p>Slug : <%= game.slug %></p>
+
+<p>Jumlah Produk :
+<b><%= game.products.length %></b>
+</p>
+
+<hr><br>
+
+<% game.products.forEach(item=>{ %>
+
+<p>
+
+<%= item.name %>
+
+-
+
+Rp<%= item.price.toLocaleString("id-ID") %>
+
+</p>
+
+<% }) %>
+
+</div>
+
+<% }) %>
+
+</div>
+
+</div>
+
+</section>
+
+<%- include("../partials/footer") %>

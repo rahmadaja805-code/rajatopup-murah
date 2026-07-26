@@ -1,0 +1,215 @@
+<%- include("partials/header") %>
+<%- include("partials/navbar") %>
+
+<section class="product-page">
+
+<div class="container">
+
+<div class="product-header">
+
+<img src="<%= game.image %>" class="product-logo">
+
+<div>
+
+<h1><%= game.name %></h1>
+
+<p>Pilih nominal top up favoritmu.</p>
+
+</div>
+
+</div>
+
+<form id="orderForm">
+
+<h3>Pilih Nominal</h3>
+
+<div class="diamond-grid">
+
+<% game.products.forEach((item,index)=>{ %>
+
+<label class="diamond-card">
+
+<input
+type="radio"
+name="product"
+value="<%= item.name %> - Rp<%= item.price.toLocaleString('id-ID') %>"
+<%= index===0 ? "checked" : "" %>
+>
+
+<div class="diamond-name">
+💎 <%= item.name %>
+</div>
+
+<div class="diamond-price">
+
+Rp<%= item.price.toLocaleString("id-ID") %>
+
+</div>
+
+</label>
+
+<% }) %>
+
+</div>
+
+<br>
+
+<label>User ID</label>
+
+<input
+type="text"
+id="userId"
+required
+placeholder="Masukkan User ID">
+
+<% if(game.zone){ %>
+
+<br><br>
+
+<label>Zone ID</label>
+
+<input
+type="text"
+id="zoneId"
+placeholder="Masukkan Zone ID">
+
+<% } %>
+
+<br><br>
+
+<label>Nomor WhatsApp</label>
+
+<input
+type="text"
+id="customerWa"
+required
+placeholder="08xxxxxxxxxx">
+
+<br><br>
+
+<div class="order-summary">
+
+<h3>Ringkasan Pesanan</h3>
+
+<div class="summary-item">
+<span>Game</span>
+<b><%= game.name %></b>
+</div>
+
+<div class="summary-item">
+<span>Nominal</span>
+<b id="summaryProduct">
+<%= game.products[0].name %>
+</b>
+</div>
+
+<div class="summary-item">
+<span>Harga</span>
+<b id="summaryPrice">
+Rp<%= game.products[0].price.toLocaleString("id-ID") %>
+</b>
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn-primary"
+type="submit">
+
+Beli Sekarang
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<script>
+
+const radios=document.querySelectorAll('input[name="product"]');
+
+const summaryProduct=document.getElementById("summaryProduct");
+
+const summaryPrice=document.getElementById("summaryPrice");
+
+radios.forEach(radio=>{
+
+radio.addEventListener("change",()=>{
+
+const value=radio.value;
+
+const split=value.split(" - Rp");
+
+summaryProduct.textContent=split[0];
+
+summaryPrice.textContent="Rp"+split[1];
+
+});
+
+});
+
+document.getElementById("orderForm").addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const selected = document.querySelector('input[name="product"]:checked');
+
+    const data = {
+
+        game: "<%= game.name %>",
+
+        product: selected.value,
+
+        userId: document.getElementById("userId").value,
+
+        zoneId: document.getElementById("zoneId")?.value || "",
+
+        customerWa: document.getElementById("customerWa").value
+
+    };
+
+    const response = await fetch("/api/orders",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(data)
+
+    });
+
+    const result = await response.json();
+
+    if(!result.success){
+        alert(result.message);
+        return;
+    }
+
+    const pesan = `Halo Admin RajaTopUp
+
+Invoice : ${result.order.invoice}
+
+Game : ${data.game}
+Produk : ${data.product}
+User ID : ${data.userId}
+Zone ID : ${data.zoneId}
+No WA : ${data.customerWa}
+
+Saya ingin melakukan top up, mohon kirim Metode Pembayaran. Terima kasih.`;
+
+    window.open(
+        "https://wa.me/<%= storeWhatsapp %>?text=" + encodeURIComponent(pesan),
+        "_blank"
+    );
+
+});
+
+</script>
+
+<%- include("partials/footer") %>

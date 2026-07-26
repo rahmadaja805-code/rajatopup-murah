@@ -1,0 +1,111 @@
+<%- include("partials/header") %>
+<%- include("partials/navbar") %>
+
+<section class="hero">
+
+<div class="container">
+
+<div class="badge">
+🔥 Top Up Game Murah • Cepat • Aman
+</div>
+
+<h1>
+Top Up Game Favoritmu
+<br>
+<span>Dalam Hitungan Menit</span>
+</h1>
+
+<p>
+Pilih game, masukkan User ID, pilih nominal, lalu lanjut ke WhatsApp admin.
+Pembayaran menggunakan QRIS dan pesanan diproses secepat mungkin.
+</p>
+
+<div class="hero-button">
+
+<a href="/games" class="btn-primary">
+🎮 Mulai Top Up
+</a>
+
+<a href="https://wa.me/<%= storeWhatsapp %>" class="btn-secondary">
+💬 Hubungi Admin
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="container">
+
+<div class="section-title">
+<h2>Game Populer</h2>
+<p>Pilih game favoritmu.</p>
+</div>
+
+<div class="feature-grid">
+
+<% products.forEach(game=>{ %>
+
+<a href="/product/<%= game.slug %>" class="card">
+
+<img
+src="<%= game.image %>"
+style="
+width:90px;
+height:90px;
+object-fit:cover;
+border-radius:18px;
+margin-bottom:15px;
+">
+
+<h3><%= game.name %></h3>
+
+<p>
+<%= game.products.length %> Nominal
+</p>
+
+</a>
+
+<% }) %>
+
+</div>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="container">
+
+<div class="section-title">
+<h2>Mengapa RajaTopUp?</h2>
+</div>
+
+<div class="feature-grid">
+
+<div class="card">
+<h3>⚡ Proses Cepat</h3>
+<p>Pesanan diproses setelah pembayaran dikonfirmasi.</p>
+</div>
+
+<div class="card">
+<h3>🔒 Aman</h3>
+<p>Tidak memerlukan password akun game.</p>
+</div>
+
+<div class="card">
+<h3>💬 Admin Aktif</h3>
+<p>Siap membantu melalui WhatsApp.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<%- include("partials/footer") %>
