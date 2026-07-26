@@ -1,0 +1,107 @@
+<%- include("partials/header") %>
+<%- include("partials/navbar") %>
+
+<section class="hero">
+
+<div class="container" style="max-width:420px">
+
+<div class="card">
+
+<h2 style="text-align:center">
+Daftar RajaTopUp
+</h2>
+
+<p style="text-align:center;margin-bottom:20px">
+Buat akun untuk menyimpan riwayat transaksi.
+</p>
+
+<% if(error){ %>
+
+<div
+style="
+background:#ffebee;
+color:#c62828;
+padding:12px;
+border-radius:8px;
+margin-bottom:15px;
+">
+
+<%= error %>
+
+</div>
+
+<% } %>
+
+<form action="/register" method="POST">
+
+<label>Nama Lengkap</label>
+
+<input
+type="text"
+name="name"
+required
+>
+
+<br><br>
+
+<label>Email</label>
+
+<input
+type="email"
+name="email"
+required
+>
+
+<br><br>
+
+<label>WhatsApp</label>
+
+<input
+type="text"
+name="whatsapp"
+placeholder="08xxxxxxxxxx"
+required
+>
+
+<br><br>
+
+<label>Password</label>
+
+<input
+type="password"
+name="password"
+required
+>
+
+<br><br>
+
+<button
+class="btn"
+style="width:100%"
+type="submit">
+
+Daftar
+
+</button>
+
+</form>
+
+<br>
+
+<p style="text-align:center">
+
+Sudah punya akun?
+
+<a href="/login">
+Login disini
+</a>
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<%- include("partials/footer") %>

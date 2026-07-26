@@ -8,9 +8,11 @@ import compression from "compression";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
+import jwt from "jsonwebtoken";
 
 import publicRoutes from "./routes/public.js";
 import adminRoutes from "./routes/admin.js";
+import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 
@@ -35,11 +37,40 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use((req, res, next) => {
+
+  const token = req.cookies.token;
+
+  res.locals.user = null;
+
+  if (token) {
+
+    try {
+
+      res.locals.user = jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );
+
+    } catch {
+
+      res.clearCookie("token");
+
+    }
+
+  }
+
+  next();
+
+});
+
 app.use(morgan("dev"));
 
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", publicRoutes);
+app.use("/", authRoutes);
 app.use("/api", apiRoutes);
 app.use("/admin", adminRoutes);
 

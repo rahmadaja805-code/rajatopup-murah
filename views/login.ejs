@@ -1,0 +1,92 @@
+<%- include("partials/header") %>
+<%- include("partials/navbar") %>
+
+<section class="hero">
+
+<div class="container" style="max-width:420px">
+
+<div class="card">
+
+<h2 style="text-align:center">
+Masuk RajaTopUp
+</h2>
+
+<p style="text-align:center;margin-bottom:20px">
+Login untuk melihat riwayat transaksi.
+Top up tetap bisa dilakukan tanpa login.
+</p>
+
+<% if(error){ %>
+
+<div
+style="
+background:#ffebee;
+color:#c62828;
+padding:12px;
+border-radius:8px;
+margin-bottom:15px;
+"
+>
+
+<%= error %>
+
+</div>
+
+<% } %>
+
+<form action="/login" method="POST">
+
+<label>Username / Email</label>
+
+<input
+type="text"
+name="username"
+placeholder="Masukkan username admin atau email"
+required
+>
+
+<br><br>
+
+<label>Password</label>
+
+<input
+type="password"
+name="password"
+required
+>
+
+<br><br>
+
+<button
+class="btn"
+style="width:100%"
+type="submit"
+>
+
+Login
+
+</button>
+
+</form>
+
+<br>
+
+<p style="text-align:center">
+
+Belum punya akun?
+
+<a href="/register">
+
+Daftar disini
+
+</a>
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<%- include("partials/footer") %>
