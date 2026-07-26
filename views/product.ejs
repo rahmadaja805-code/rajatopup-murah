@@ -130,25 +130,38 @@ Beli Sekarang
 
 <script>
 
-const radios=document.querySelectorAll('input[name="product"]');
+const radios = document.querySelectorAll('input[name="product"]');
 
-const summaryProduct=document.getElementById("summaryProduct");
+const summaryProduct = document.getElementById("summaryProduct");
 
-const summaryPrice=document.getElementById("summaryPrice");
+const summaryPrice = document.getElementById("summaryPrice");
 
-radios.forEach(radio=>{
+const orderForm = document.getElementById("orderForm");
 
-radio.addEventListener("change",()=>{
+const userId = document.getElementById("userId");
 
-const value=radio.value;
+radios.forEach((radio) => {
 
-const split=value.split(" - Rp");
+  radio.addEventListener("change", () => {
 
-summaryProduct.textContent=split[0];
+    const value = radio.value;
 
-summaryPrice.textContent="Rp"+split[1];
+    const split = value.split(" - Rp");
 
-});
+    summaryProduct.textContent = split[0];
+
+    summaryPrice.textContent = "Rp" + split[1];
+
+    orderForm.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+    setTimeout(() => {
+      userId.focus();
+    }, 400);
+
+  });
 
 });
 
