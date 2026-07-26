@@ -1,7 +1,8 @@
 import express from "express";
 import {
   dashboard,
-  products
+  products,
+updateStatus
 } from "../controllers/adminController.js";
 
 const router = express.Router();
@@ -13,5 +14,7 @@ router.get("/", (req, res) => {
 router.get("/dashboard", dashboard);
 
 router.get("/products", products);
+
+router.post("/order/status", updateStatus);
 
 export default router;

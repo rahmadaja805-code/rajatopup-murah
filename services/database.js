@@ -1,58 +1,185 @@
-import fs from "fs/promises";
-import path from "path";
-import { fileURLToPath } from "url";
+import { pool } from "../database/postgres.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-const databasePath = path.join(__dirname, "../database");
-
-async function read(file) {
-  try {
-    const data = await fs.readFile(
-      path.join(databasePath, file),
-      "utf8"
-    );
-
-    return JSON.parse(data);
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-}
-
-async function write(file, data) {
-  await fs.writeFile(
-    path.join(databasePath, file),
-    JSON.stringify(data, null, 2),
-    "utf8"
-  );
-}
+// =====================
+// PRODUCTS
+// =====================
 
 export async function getProducts() {
-  return await read("products.json");
+
+  const games = await pool.query(`
+    SELECT *
+    FROM games
+    ORDER BY id
+  `);
+
+  const result = [];
+
+  for (const game of games.rows) {
+
+    const products = await pool.query(
+      `
+      SELECT name, price
+      FROM products
+      WHERE game_id=$1
+      ORDER BY id
+      `,
+      [game.id]
+    );
+
+
+    result.push({
+      id: game.id,
+      slug: game.slug,
+      name: game.name,
+      image: game.image,
+      zone: game.zone,
+      products: products.rows
+    });
+
+  }
+
+  return result;
 }
 
-export async function getAdmins() {
-  return await read("admins.json");
+
+// =====================
+// ORDERS
+// =====================
+
+export async function getOrders(){
+
+  const result = await pool.query(`
+    SELECT
+    id,
+    invoice,
+    game,
+    product,
+    user_id AS "userId",
+    zone_id AS "zoneId",
+    customer_wa AS "customerWa",
+    status,
+    created_at AS "createdAt"
+    FROM orders
+    ORDER BY id DESC
+  `);
+
+  return result.rows;
+
 }
 
-export async function getOrders() {
-  return await read("orders.json");
+
+// =====================
+// SAVE ORDER
+// =====================
+
+export async function saveOrder(order){
+
+  await pool.query(
+    `
+    INSERT INTO orders
+    (
+      invoice,
+      game,
+      product,
+      user_id,
+      zone_id,
+      customer_wa,
+      status
+    )
+    VALUES
+    ($1,$2,$3,$4,$5,$6,$7)
+    `,
+    [
+      order.invoice,
+      order.game,
+      order.product,
+      order.userId,
+      order.zoneId,
+      order.customerWa,
+      order.status
+    ]
+  );
+
 }
 
-export async function getSettings() {
-  return await read("settings.json");
+
+// =====================
+// ADMINS
+// =====================
+
+export async function getAdmins(){
+
+  const result = await pool.query(
+    "SELECT * FROM admins"
+  );
+
+  return result.rows;
+
 }
 
-export async function saveOrders(data) {
-  return await write("orders.json", data);
+
+// =====================
+// SETTINGS
+// =====================
+
+export async function getSettings(){
+
+  const result = await pool.query(
+    "SELECT * FROM settings"
+  );
+
+  return result.rows;
+
 }
 
-export async function saveProducts(data) {
-  return await write("products.json", data);
+export async function saveOrders(data){
+
+  for(const order of data){
+
+    await pool.query(
+      `
+      INSERT INTO orders
+      (
+        invoice,
+        game,
+        product,
+        user_id,
+        zone_id,
+        customer_wa,
+        status
+      )
+      VALUES
+      ($1,$2,$3,$4,$5,$6,$7)
+      ON CONFLICT (invoice) DO NOTHING
+      `,
+      [
+        order.invoice,
+        order.game,
+        order.product,
+        order.userId,
+        order.zoneId,
+        order.customerWa,
+        order.status
+      ]
+    );
+
+  }
+
 }
 
-export async function saveSettings(data) {
-  return await write("settings.json", data);
+export async function updateOrderStatus(invoice, status){
+
+  await pool.query(
+    `
+    UPDATE orders
+    SET status=$1
+    WHERE invoice=$2
+    `,
+    [
+      status,
+      invoice
+    ]
+  );
+
 }

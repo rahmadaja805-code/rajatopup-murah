@@ -15,7 +15,9 @@
 
 <br>
 
-<table style="width:100%;border-collapse:collapse">
+<div style="overflow-x:auto">
+
+<table style="width:100%;border-collapse:collapse;min-width:700px">
 
 <thead>
 
@@ -48,7 +50,53 @@
 
 <td><%= order.product %></td>
 
-<td><%= order.status %></td>
+<td>
+
+<form action="/admin/order/status" method="POST">
+
+<input 
+type="hidden" 
+name="invoice" 
+value="<%= order.invoice %>"
+>
+
+<select name="status">
+
+<option value="MENUNGGU_PEMBAYARAN"
+<%= order.status==="MENUNGGU_PEMBAYARAN" ? "selected" : "" %>>
+MENUNGGU PEMBAYARAN
+</option>
+
+
+<option value="DIPROSES"
+<%= order.status==="DIPROSES" ? "selected" : "" %>>
+DIPROSES
+</option>
+
+
+<option value="SELESAI"
+<%= order.status==="SELESAI" ? "selected" : "" %>>
+SELESAI
+</option>
+
+
+<option value="BATAL"
+<%= order.status==="BATAL" ? "selected" : "" %>>
+BATAL
+</option>
+
+
+</select>
+
+
+<button type="submit">
+UPDATE
+</button>
+
+
+</form>
+
+</td>
 
 </tr>
 
