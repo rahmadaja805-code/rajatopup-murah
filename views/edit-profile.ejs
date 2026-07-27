@@ -1,0 +1,70 @@
+<%- include("partials/header") %>
+<%- include("partials/navbar") %>
+
+<section class="hero">
+
+<div class="container" style="max-width:600px">
+
+<div class="auth-card">
+
+<h2>Edit Profil</h2>
+
+<form
+action="/profile/edit"
+method="POST"
+enctype="multipart/form-data">
+
+<label>Nama</label>
+
+<input
+class="form-control"
+type="text"
+name="name"
+value="<%= user.name %>">
+
+<br>
+
+<label>Email</label>
+
+<input
+class="form-control"
+type="email"
+name="email"
+value="<%= user.email %>">
+
+<br>
+
+<label>WhatsApp</label>
+
+<input
+class="form-control"
+type="text"
+name="whatsapp"
+value="<%= user.whatsapp %>">
+
+<br>
+
+<label>Foto Profil</label>
+
+<input
+type="file"
+name="avatar">
+
+<br><br>
+
+<button
+class="btn-auth">
+
+Simpan
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+<%- include("partials/footer") %>

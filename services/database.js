@@ -335,3 +335,19 @@ export async function createManyProducts(products){
     }
 
 }
+
+export async function getOrdersByWhatsapp(whatsapp){
+
+    const result = await pool.query(
+        `
+        SELECT *
+        FROM orders
+        WHERE customer_wa=$1
+        ORDER BY created_at DESC
+        `,
+        [whatsapp]
+    );
+
+    return result.rows;
+
+}

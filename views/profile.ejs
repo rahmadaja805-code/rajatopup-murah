@@ -1,0 +1,121 @@
+<%- include("partials/header") %>
+<%- include("partials/navbar") %>
+
+<section class="hero">
+
+<div class="container" style="max-width:700px">
+
+<div class="auth-card">
+
+<div style="text-align:center">
+
+<img
+src="<%= user.avatar || '/images/avatar.png' %>"
+class="profile-avatar"
+alt="Avatar">
+
+<h2><%= user.name %></h2>
+
+<p><%= user.email %></p>
+
+</div>
+
+<hr style="margin:25px 0">
+
+<p><strong>WhatsApp</strong></p>
+
+<p><%= user.whatsapp %></p>
+
+<br>
+
+<a href="/profile/edit" class="btn-auth">
+
+Edit Profil
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<h2 class="history-title">
+📦 Riwayat Top Up
+</h2>
+
+<div class="history-list">
+
+<% if(orders.length===0){ %>
+
+<div class="history-empty">
+Belum ada transaksi.
+</div>
+
+<% } %>
+
+<% orders.forEach(order=>{ %>
+
+<div class="history-card">
+
+<div class="history-top">
+
+<div>
+
+<h3><%= order.game_name %></h3>
+
+<p class="invoice">
+🧾 <%= order.invoice %>
+</p>
+
+</div>
+
+<span class="status success">
+
+<%= order.status %>
+
+</span>
+
+</div>
+
+<div class="history-body">
+
+<p>
+
+💎 <strong>
+
+<%= order.product_name %>
+
+</strong>
+
+</p>
+
+<p>
+
+💰 <%= order.price %>
+
+</p>
+
+<p>
+
+🕒 <%= new Date(order.created_at).toLocaleString("id-ID") %>
+
+</p>
+
+</div>
+
+<a
+href="/invoice/<%= order.invoice %>"
+class="btn-history">
+
+Lihat Detail
+
+</a>
+
+</div>
+
+<% }) %>
+
+</div>
+
+<%- include("partials/footer") %>

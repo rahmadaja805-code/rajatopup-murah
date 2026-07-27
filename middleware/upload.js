@@ -1,55 +1,48 @@
 import multer from "multer";
 import path from "path";
-
+import fs from "fs";
 
 const storage = multer.diskStorage({
 
-    destination:(req,file,cb)=>{
+    destination(req,file,cb){
 
-        cb(null,"public/images/games");
+        let folder = "public/images/games";
+
+        if(req.originalUrl.includes("/profile")){
+            folder = "public/uploads/avatar";
+        }
+
+        fs.mkdirSync(folder,{recursive:true});
+
+        cb(null,folder);
 
     },
 
+    filename(req,file,cb){
 
-    filename:(req,file,cb)=>{
-
-        const ext = path.extname(file.originalname);
-
-        const name =
-        Date.now() + ext;
-
-
-        cb(null,name);
+        cb(
+            null,
+            Date.now() +
+            path.extname(file.originalname)
+        );
 
     }
 
 });
-
 
 const upload = multer({
 
     storage,
 
     limits:{
-        fileSize: 5 * 1024 * 1024
+        fileSize:5*1024*1024
     },
 
-    fileFilter:(req,file,cb)=>{
+    fileFilter(req,file,cb){
 
-        const allowed = [
-            ".png",
-            ".jpg",
-            ".jpeg",
-            ".webp"
-        ];
+        const ext = path.extname(file.originalname).toLowerCase();
 
-
-        const ext =
-        path.extname(file.originalname)
-        .toLowerCase();
-
-
-        if(allowed.includes(ext)){
+        if([".png",".jpg",".jpeg",".webp"].includes(ext)){
 
             cb(null,true);
 
@@ -62,6 +55,5 @@ const upload = multer({
     }
 
 });
-
 
 export default upload;

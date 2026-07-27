@@ -52,6 +52,7 @@ export async function findUserById(id){
       name,
       email,
       whatsapp,
+      avatar,
       created_at
     FROM users
     WHERE id=$1
@@ -60,5 +61,26 @@ export async function findUserById(id){
   );
 
   return result.rows[0];
+
+}
+
+export async function updateUser(id, data) {
+
+  await pool.query(
+    `UPDATE users
+     SET
+       name = $1,
+       email = $2,
+       whatsapp = $3,
+       avatar = $4
+     WHERE id = $5`,
+    [
+      data.name,
+      data.email,
+      data.whatsapp,
+      data.avatar,
+      id
+    ]
+  );
 
 }
