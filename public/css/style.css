@@ -372,8 +372,9 @@ height:180px;
 
 .game-image{
     width:100%;
-    height:110px;
+    height:180px;
     object-fit:cover;
+    object-position:center 70%;
 }
 
 .game-content{
@@ -409,7 +410,8 @@ gap:18px;
 }
 
 .game-image{
-    height:95px;
+    height:160px;
+    object-position:center 70%;
 }
 
 .game-content{
