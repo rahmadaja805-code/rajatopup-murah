@@ -7,7 +7,10 @@ import {
   createGame,
   updateGame,
   deleteGame,
-  getGameBySlug
+  getGameBySlug,
+  createProduct,
+  getGameProducts,
+  deleteProduct
 } from "../services/database.js";
 
 import {
@@ -154,6 +157,63 @@ router.get("/games/edit/:slug", async(req,res)=>{
         title:"Edit Game",
         game
     });
+
+});
+
+// =====================
+// PRODUCT ADMIN
+// =====================
+
+router.get("/games/:slug/products", async (req,res)=>{
+
+    const game = await getGameBySlug(
+        req.params.slug
+    );
+
+    const products = await getGameProducts(
+        game.id
+    );
+
+
+    res.render("admin/game-products",{
+        title:"Kelola Produk",
+        game,
+        products
+    });
+
+});
+
+
+
+router.post("/products/add", async(req,res)=>{
+
+    await createProduct({
+
+        game_id:req.body.game_id,
+
+        name:req.body.name,
+
+        price:req.body.price
+
+    });
+
+
+    res.redirect(
+        "/admin/games/" + req.body.slug + "/products"
+    );
+
+});
+
+
+
+router.get("/products/delete/:id", async(req,res)=>{
+
+    await deleteProduct(
+        req.params.id
+    );
+
+
+    res.redirect("back");
 
 });
 

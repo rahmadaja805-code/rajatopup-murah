@@ -255,3 +255,58 @@ export async function deleteGame(slug){
     );
 
 }
+
+// =====================
+// PRODUCT CRUD
+// =====================
+
+export async function createProduct(data){
+
+    await pool.query(
+        `
+        INSERT INTO products
+        (
+            game_id,
+            name,
+            price
+        )
+        VALUES($1,$2,$3)
+        `,
+        [
+            data.game_id,
+            data.name,
+            data.price
+        ]
+    );
+
+}
+
+
+export async function getGameProducts(game_id){
+
+    const result = await pool.query(
+        `
+        SELECT *
+        FROM products
+        WHERE game_id=$1
+        ORDER BY id
+        `,
+        [game_id]
+    );
+
+    return result.rows;
+
+}
+
+
+export async function deleteProduct(id){
+
+    await pool.query(
+        `
+        DELETE FROM products
+        WHERE id=$1
+        `,
+        [id]
+    );
+
+}

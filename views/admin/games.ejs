@@ -92,11 +92,32 @@ style="width:60px;border-radius:10px">
 <td>
 
 <a
+href="/admin/games/<%= game.slug %>/products">
+
+💎 Produk
+
+</a>
+
+|
+
+<a
 href="/admin/games/edit/<%= game.slug %>">
 
 ✏ Edit
 
 </a>
+
+|
+
+<a
+href="/admin/games/delete/<%= game.slug %>"
+onclick="return confirm('Hapus game ini?')">
+
+🗑 Hapus
+
+</a>
+
+</td>
 
 |
 

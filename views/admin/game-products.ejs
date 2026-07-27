@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kelola Produk</title>
+
+<link rel="stylesheet" href="/css/admin.css">
+
+</head>
+
+
+<body>
+
+<div class="admin-wrapper">
+
+
+<%- include("layout/sidebar") %>
+
+
+<div class="admin-content">
+
+
+<%- include("layout/header") %>
+
+
+<div class="page-title">
+
+<h2>
+💎 Produk <%= game.name %>
+</h2>
+
+
+<a href="/admin/games" class="btn-primary">
+Kembali
+</a>
+
+</div>
+
+
+
+<div class="admin-table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nama</th>
+
+<th>Harga</th>
+
+<th>Aksi</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+<% products.forEach(item=>{ %>
+
+<tr>
+
+
+<td>
+<%= item.name %>
+</td>
+
+
+<td>
+Rp<%= item.price.toLocaleString("id-ID") %>
+</td>
+
+
+<td>
+
+<a
+href="/admin/products/delete/<%= item.id %>"
+onclick="return confirm('Hapus produk ini?')">
+
+🗑 Hapus
+
+</a>
+
+</td>
+
+
+</tr>
+
+<% }) %>
+
+
+</tbody>
+
+</table>
+
+
+</div>
+
+
+<br>
+
+
+<div class="admin-card">
+
+
+<h3>
+Tambah Produk
+</h3>
+
+
+<form action="/admin/products/add" method="POST">
+
+
+<input
+type="hidden"
+name="game_id"
+value="<%= game.id %>">
+
+
+<input
+type="hidden"
+name="slug"
+value="<%= game.slug %>">
+
+
+<label>
+Nama Produk
+</label>
+
+
+<input
+type="text"
+name="name"
+placeholder="Contoh: 86 Diamond"
+required>
+
+
+<br><br>
+
+
+<label>
+Harga
+</label>
+
+
+<input
+type="number"
+name="price"
+placeholder="22000"
+required>
+
+
+<br><br>
+
+
+<button class="btn-primary">
+
+Tambah Produk
+
+</button>
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>
