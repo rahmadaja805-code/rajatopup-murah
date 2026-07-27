@@ -85,6 +85,7 @@ export async function login(req, res) {
     } = req.body;
 
     // Login Admin
+
 if (
   username === process.env.ADMIN_USERNAME &&
   password === process.env.ADMIN_PASSWORD
@@ -92,28 +93,25 @@ if (
 
 const token = jwt.sign(
 {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    whatsapp: user.whatsapp,
-    role: "user"
+    username: process.env.ADMIN_USERNAME,
+    role: "admin"
 },
 process.env.JWT_SECRET,
 {
     expiresIn: process.env.JWT_EXPIRES
 });
 
-      res.cookie(
-        "token",
-        token,
-        {
-          httpOnly: true
-        }
-      );
+res.cookie(
+  "token",
+  token,
+  {
+    httpOnly:true
+  }
+);
 
-      return res.redirect("/admin/dashboard");
+return res.redirect("/admin/dashboard");
 
-    }
+}
 
     // Login User
 const user = await findUserByEmail(username);
