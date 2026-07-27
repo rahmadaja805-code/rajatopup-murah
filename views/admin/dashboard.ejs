@@ -1,44 +1,99 @@
-<%- include("../partials/header") %>
-<%- include("../partials/navbar") %>
+<!DOCTYPE html>
+<html lang="id">
 
-<section class="hero">
+<head>
 
-<div class="container">
+<meta charset="UTF-8">
 
-<h1>Dashboard Admin</h1>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<br>
+<title>Dashboard Admin</title>
 
-<div class="card">
+<link rel="stylesheet" href="/css/admin.css">
 
-<h3>Daftar Pesanan</h3>
+</head>
 
-<br>
+<body>
 
-<div style="overflow-x:auto">
+<div class="admin-wrapper">
 
-<table style="width:100%;border-collapse:collapse;min-width:700px">
+<%- include("layout/sidebar") %>
+
+<div class="admin-content">
+
+<%- include("layout/header") %>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<h3>Total Pesanan</h3>
+
+<h1><%= orders.length %></h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Diproses</h3>
+
+<h1>
+
+<%= orders.filter(o=>o.status==="DIPROSES").length %>
+
+</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Selesai</h3>
+
+<h1>
+
+<%= orders.filter(o=>o.status==="SELESAI").length %>
+
+</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Pending</h3>
+
+<h1>
+
+<%= orders.filter(o=>o.status==="MENUNGGU_PEMBAYARAN").length %>
+
+</h1>
+
+</div>
+
+</div>
+
+<div class="admin-table">
+
+<table>
 
 <thead>
 
 <tr>
+
 <th>Invoice</th>
+
 <th>Game</th>
+
 <th>Produk</th>
+
 <th>Status</th>
+
+<th>Aksi</th>
+
 </tr>
 
 </thead>
 
 <tbody>
-
-<% if(orders.length===0){ %>
-
-<tr>
-<td colspan="4">Belum ada pesanan.</td>
-</tr>
-
-<% } %>
 
 <% orders.forEach(order=>{ %>
 
@@ -52,47 +107,72 @@
 
 <td>
 
+<% if(order.status==="MENUNGGU_PEMBAYARAN"){ %>
+
+<span class="status pending">
+Pending
+</span>
+
+<% }else if(order.status==="DIPROSES"){ %>
+
+<span class="status proses">
+Diproses
+</span>
+
+<% }else if(order.status==="SELESAI"){ %>
+
+<span class="status selesai">
+Selesai
+</span>
+
+<% }else{ %>
+
+<span class="status batal">
+Batal
+</span>
+
+<% } %>
+
+</td>
+
+<td>
+
 <form action="/admin/order/status" method="POST">
 
-<input 
-type="hidden" 
-name="invoice" 
-value="<%= order.invoice %>"
->
+<input
+type="hidden"
+name="invoice"
+value="<%= order.invoice %>">
 
 <select name="status">
 
 <option value="MENUNGGU_PEMBAYARAN"
 <%= order.status==="MENUNGGU_PEMBAYARAN" ? "selected" : "" %>>
-MENUNGGU PEMBAYARAN
+Pending
 </option>
-
 
 <option value="DIPROSES"
 <%= order.status==="DIPROSES" ? "selected" : "" %>>
-DIPROSES
+Diproses
 </option>
-
 
 <option value="SELESAI"
 <%= order.status==="SELESAI" ? "selected" : "" %>>
-SELESAI
+Selesai
 </option>
-
 
 <option value="BATAL"
 <%= order.status==="BATAL" ? "selected" : "" %>>
-BATAL
+Batal
 </option>
-
 
 </select>
 
-
 <button type="submit">
-UPDATE
-</button>
 
+Update
+
+</button>
 
 </form>
 
@@ -108,8 +188,21 @@ UPDATE
 
 </div>
 
+<div class="chart-card">
+
+<h3>Grafik Order</h3>
+
+<canvas id="orderChart"></canvas>
+
 </div>
 
-</section>
+</div>
 
-<%- include("../partials/footer") %>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/js/admin.js"></script>
+
+</body>
+
+</html>

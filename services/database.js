@@ -183,3 +183,75 @@ export async function updateOrderStatus(invoice, status){
   );
 
 }
+
+export async function createGame(data){
+
+    const sql = `
+        INSERT INTO games
+        (
+            name,
+            slug,
+            image
+        )
+        VALUES($1,$2,$3)
+    `;
+
+    await pool.query(sql,[
+        data.name,
+        data.slug,
+        data.image
+    ]);
+
+}
+
+// =====================
+// GAME CRUD
+// =====================
+
+export async function getGameBySlug(slug){
+
+    const result = await pool.query(
+        `
+        SELECT *
+        FROM games
+        WHERE slug=$1
+        `,
+        [slug]
+    );
+
+    return result.rows[0];
+
+}
+
+
+export async function updateGame(slug,data){
+
+    await pool.query(
+        `
+        UPDATE games
+        SET
+        name=$1,
+        image=$2
+        WHERE slug=$3
+        `,
+        [
+            data.name,
+            data.image,
+            slug
+        ]
+    );
+
+}
+
+
+export async function deleteGame(slug){
+
+    await pool.query(
+        `
+        DELETE FROM games
+        WHERE slug=$1
+        `,
+        [slug]
+    );
+
+}

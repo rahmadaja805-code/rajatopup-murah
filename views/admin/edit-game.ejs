@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Edit Game</title>
+
+<link rel="stylesheet" href="/css/admin.css">
+
+</head>
+
+
+<body>
+
+
+<div class="admin-wrapper">
+
+
+<%- include("layout/sidebar") %>
+
+
+<div class="admin-content">
+
+
+<%- include("layout/header") %>
+
+
+
+<h2>Edit Game</h2>
+
+
+
+<form 
+action="/admin/games/edit/<%= game.slug %>" 
+method="POST"
+enctype="multipart/form-data">
+
+
+<label>Nama Game</label>
+
+<input 
+type="text"
+name="name"
+value="<%= game.name %>"
+required>
+
+
+<br><br>
+
+
+<label>Gambar Baru</label>
+
+<br>
+
+<img 
+src="<%= game.image %>"
+style="width:120px;border-radius:12px">
+
+<br><br>
+
+<input
+type="file"
+name="image"
+accept="image/*">
+
+<input
+type="hidden"
+name="oldImage"
+value="<%= game.image %>">
+
+<br><br>
+
+
+<button class="btn-primary">
+Update
+</button>
+
+
+</form>
+
+
+
+</div>
+
+</div>
+
+
+</body>
+
+</html>

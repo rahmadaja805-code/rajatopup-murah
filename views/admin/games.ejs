@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kelola Game</title>
+
+<link rel="stylesheet" href="/css/admin.css">
+
+</head>
+
+<body>
+
+<div class="admin-wrapper">
+
+<%- include("layout/sidebar") %>
+
+<div class="admin-content">
+
+<%- include("layout/header") %>
+
+<div class="page-title">
+
+<h2>🎮 Kelola Game</h2>
+
+<a href="/admin/games/add" class="btn-primary">
+
++ Tambah Game
+
+</a>
+
+</div>
+
+<div class="admin-table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Logo</th>
+
+<th>Nama Game</th>
+
+<th>Slug</th>
+
+<th>Produk</th>
+
+<th>Aksi</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% games.forEach(game=>{ %>
+
+<tr>
+
+<td>
+
+<img
+src="<%= game.image %>"
+style="width:60px;border-radius:10px">
+
+</td>
+
+<td>
+
+<%= game.name %>
+
+</td>
+
+<td>
+
+<%= game.slug %>
+
+</td>
+
+<td>
+
+<%= game.products.length %>
+
+</td>
+
+<td>
+
+<a
+href="/admin/games/edit/<%= game.slug %>">
+
+✏ Edit
+
+</a>
+
+|
+
+<a
+href="/admin/games/delete/<%= game.slug %>"
+onclick="return confirm('Hapus game ini?')">
+
+🗑 Hapus
+
+</a>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="/js/admin.js"></script>
+
+</body>
+
+</html>
