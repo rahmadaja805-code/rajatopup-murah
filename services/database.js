@@ -310,3 +310,28 @@ export async function deleteProduct(id){
     );
 
 }
+
+export async function createManyProducts(products){
+
+    for(const item of products){
+
+        await pool.query(
+            `
+            INSERT INTO products
+            (
+                game_id,
+                name,
+                price
+            )
+            VALUES($1,$2,$3)
+            `,
+            [
+                item.game_id,
+                item.name,
+                item.price
+            ]
+        );
+
+    }
+
+}

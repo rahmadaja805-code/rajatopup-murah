@@ -171,6 +171,102 @@ Tambah Produk
 
 </form>
 
+<hr>
+
+<h3>
+Tambah Banyak Nominal
+</h3>
+
+
+<form action="/admin/products/add-many" method="POST">
+
+
+<input
+type="hidden"
+name="game_id"
+value="<%= game.id %>">
+
+
+<input
+type="hidden"
+name="slug"
+value="<%= game.slug %>">
+
+
+
+<div id="productRows">
+
+
+<div>
+
+<input
+name="name"
+placeholder="86 Diamond">
+
+
+<input
+name="price"
+placeholder="22000">
+
+
+</div>
+
+
+</div>
+
+
+
+<button
+type="button"
+onclick="addRow()">
+
++ Tambah Baris
+
+</button>
+
+
+<br><br>
+
+
+<button class="btn-primary">
+
+Simpan Semua
+
+</button>
+
+
+</form>
+
+
+
+<script>
+
+function addRow(){
+
+const box=document.getElementById("productRows");
+
+
+box.innerHTML += `
+
+<div>
+
+<input
+name="name"
+placeholder="Nama Produk">
+
+
+<input
+name="price"
+placeholder="Harga">
+
+
+</div>
+
+`;
+
+}
+
+</script>
 
 </div>
 

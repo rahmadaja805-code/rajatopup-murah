@@ -10,7 +10,8 @@ import {
   getGameBySlug,
   createProduct,
   getGameProducts,
-  deleteProduct
+  deleteProduct,
+  createManyProducts
 } from "../services/database.js";
 
 import {
@@ -205,15 +206,61 @@ router.post("/products/add", async(req,res)=>{
 });
 
 
+router.post("/products/add-many", async(req,res)=>{
+
+
+const game_id = req.body.game_id;
+
+
+const products = [];
+
+
+for(let i=0;i<req.body.name.length;i++){
+
+
+products.push({
+
+game_id,
+
+name:req.body.name[i],
+
+price:req.body.price[i]
+
+});
+
+
+}
+
+
+
+await createManyProducts(products);
+
+
+res.redirect(
+"/admin/games/"+req.body.slug+"/products"
+);
+
+
+});
 
 router.get("/products/delete/:id", async(req,res)=>{
 
-    await deleteProduct(
-        req.params.id
-    );
+
+    const id = Number(req.params.id);
+
+
+    if(!id){
+
+        return res.send("ID produk tidak valid");
+
+    }
+
+
+    await deleteProduct(id);
 
 
     res.redirect("back");
+
 
 });
 
