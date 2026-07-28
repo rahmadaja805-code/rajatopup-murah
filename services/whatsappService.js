@@ -52,8 +52,7 @@ export async function sendImage(target, image, caption){
       {
         method:"POST",
         headers:{
-          Authorization: process.env.FONNTE_TOKEN,
-          ...data.getHeaders()
+          Authorization: process.env.FONNTE_TOKEN
         },
         body:data
       }
@@ -66,7 +65,9 @@ export async function sendImage(target, image, caption){
     return result;
 
   }catch(err){
+
     console.error("Image Error:", err.message);
+
   }
 
 }
