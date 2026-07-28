@@ -32,7 +32,7 @@ Setelah transfer kirim bukti pembayaran ya Kak 😊`);
 
 Silakan scan QRIS di atas.
 
-Biaya layanan QRIS sebesar *0,7%* akan ditambahkan ke total pembayaran.
+⚠️ Biaya layanan QRIS sebesar *0,7%* akan ditambahkan ke total pembayaran.
 
 Setelah pembayaran berhasil, kirim bukti transfer ya Kak 😊`
         );
