@@ -34,3 +34,32 @@ export async function sendWhatsApp(target, message){
   }
 
 }
+
+export async function sendImage(target, image, caption){
+
+  try{
+
+    const response = await fetch(
+      "https://api.fonnte.com/send",
+      {
+        method: "POST",
+        headers:{
+          Authorization: process.env.FONNTE_TOKEN
+        },
+        body: new URLSearchParams({
+          target,
+          url: image,
+          caption
+        })
+      }
+    );
+
+    return await response.json();
+
+  }catch(err){
+
+    console.error(err);
+
+  }
+
+}
