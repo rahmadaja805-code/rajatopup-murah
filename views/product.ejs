@@ -222,7 +222,11 @@ document.getElementById("orderForm").addEventListener("submit", async function(e
         return;
     }
 
-const harga = result.order.price;
+const hargaText = data.product.match(/Rp([\d.]+)/);
+
+const harga = Number(
+    hargaText[1].replace(/\./g,"")
+);
 
 const fee = Math.floor(harga * 0.007);
 
