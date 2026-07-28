@@ -51,6 +51,7 @@ console.log("IMAGE URL:", image);
         body: new URLSearchParams({
           target,
           url: image,
+          filename: "qris.jpg",
           message: caption
         })
       }
