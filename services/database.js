@@ -338,16 +338,32 @@ export async function createManyProducts(products){
 
 export async function getOrdersByWhatsapp(whatsapp){
 
+    const nomor08 = whatsapp.startsWith("62")
+        ? "0" + whatsapp.substring(2)
+        : whatsapp;
+
+
+    const nomor62 = whatsapp.startsWith("0")
+        ? "62" + whatsapp.substring(1)
+        : whatsapp;
+
+
     const result = await pool.query(
         `
         SELECT *
         FROM orders
         WHERE customer_wa=$1
+        OR customer_wa=$2
         ORDER BY created_at DESC
         `,
-        [whatsapp]
+        [
+            nomor08,
+            nomor62
+        ]
     );
+
 
     return result.rows;
 
 }
+
