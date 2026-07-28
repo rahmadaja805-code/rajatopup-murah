@@ -48,7 +48,7 @@ export async function sendImage(target, image, caption){
         },
         body: new URLSearchParams({
           target,
-          file: image,
+          url: image,
           message: caption
         })
       }
