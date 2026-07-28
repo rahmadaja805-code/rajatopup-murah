@@ -10,49 +10,156 @@
       ☰
     </button>
 
+    <div class="menu-overlay" id="menuOverlay"></div>
+
     <div class="nav-links" id="navLinks">
 
-      <a href="/">Home</a>
+<button id="closeMenu" class="close-menu">
+✕
+</button>
 
-      <a href="/games">Semua Game</a>
+<% if(!user){ %>
 
-      <a href="/about">Tentang</a>
+<div class="menu-header">
+    <h2>👑 RajaTopUp</h2>
+    <p>Top Up Game Termurah</p>
+</div>
 
-      <% if(!user){ %>
+<div class="nav-divider"></div>
 
-        <a href="/login">
-          Login
-        </a>
+<a href="/">🏠 Beranda</a>
 
-        <a href="/register">
-          Daftar
-        </a>
+<a href="/games">🎮 Semua Game</a>
 
-      <% } %>
+<a href="/about">📄 Tentang Kami</a>
 
-      <% if(user && user.role==="user"){ %>
+<a href="/contact">💬 Hubungi Admin</a>
 
-        <a href="/profile">
-          Profil
-        </a>
+<a href="/faq">❓ FAQ</a>
 
-        <a href="/logout">
-          Logout
-        </a>
+<div class="nav-divider"></div>
 
-      <% } %>
+<a href="/login">🔑 Login</a>
+
+<a href="/register">📝 Daftar</a>
+
+<div class="nav-divider"></div>
+
+<div class="menu-footer">
+Version 1.0.0<br>
+© RajaTopUp
+</div>
+
+<% } %>
+
+<% if(user && user.role==="user"){ %>
+
+<div class="sidebar-header">
+
+<h2>👑 RajaTopUp</h2>
+
+<p>Top Up Game Termurah</p>
+
+</div>
+
+<div class="nav-divider"></div>
+
+<div class="user-box">
+
+<img
+src="<%= user.avatar || '/images/avatar.png' %>"
+class="user-avatar"
+alt="Avatar">
+
+<h3><%= user.name %></h3>
+
+<p>📧 <%= user.email %></p>
+
+</div>
+
+<div class="nav-divider"></div>
+
+<a href="/">🏠 Beranda</a>
+
+<a href="/games">🎮 Semua Game</a>
+
+<a href="/profile#history">📦 Riwayat Top Up</a>
+
+<a href="/profile">👤 Profil Saya</a>
+
+<a href="/invoice">🧾 Cek Invoice</a>
+
+<a
+href="https://wa.me/<%= storeWhatsapp %>"
+target="_blank">
+
+💬 Hubungi Admin
+
+</a>
+
+<div class="nav-divider"></div>
+
+<a href="/profile/edit">
+
+⚙️ Pengaturan Akun
+
+</a>
+
+<a href="/about">
+
+📄 Tentang Kami
+
+</a>
+
+<a href="/faq">
+
+❓ FAQ
+
+</a>
+
+<div class="nav-divider"></div>
+
+<a
+href="/logout"
+class="logout-btn">
+
+🚪 Logout
+
+</a>
+
+<div class="nav-divider"></div>
+
+<div class="sidebar-footer">
+
+<p>
+
+Version 1.0.0
+
+</p>
+
+<small>
+
+© RajaTopUp
+
+</small>
+
+</div>
+
+<% } %>
 
       <% if(user && user.role==="admin"){ %>
+
+        <div class="nav-divider"></div>
 
         <a
           href="/admin/dashboard"
           class="admin-btn"
         >
-          Dashboard Admin
+          👑 Dashboard Admin
         </a>
 
-        <a href="/logout">
-          Logout
+        <a href="/logout" class="logout-btn">
+          🚪 Logout
         </a>
 
       <% } %>

@@ -1,10 +1,52 @@
+const closeMenu = document.getElementById("closeMenu");
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
+const overlay = document.getElementById("menuOverlay");
 
 if (menuToggle) {
+
   menuToggle.addEventListener("click", () => {
+
     navLinks.classList.toggle("active");
+
+    document.body.classList.toggle("menu-open");
+
+    if(overlay){
+      overlay.classList.toggle("active");
+    }
+
   });
+
+}
+
+if(overlay){
+
+  overlay.addEventListener("click",()=>{
+
+    navLinks.classList.remove("active");
+
+    document.body.classList.remove("menu-open");
+
+    overlay.classList.remove("active");
+
+  });
+
+}
+
+if(closeMenu){
+
+    closeMenu.addEventListener("click",()=>{
+
+        navLinks.classList.remove("active");
+
+        document.body.classList.remove("menu-open");
+
+        if(overlay){
+            overlay.classList.remove("active");
+        }
+
+    });
+
 }
 
 // =========================

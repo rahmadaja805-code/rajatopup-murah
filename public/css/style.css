@@ -253,23 +253,96 @@ section{
 
 .menu-toggle{
 display:block;
+z-index:10001;
 }
 
 .nav-links{
-display:none;
+
+display:flex;
 flex-direction:column;
-position:absolute;
-top:75px;
-left:0;
-width:100%;
+align-items:flex-start;
+gap:18px;
+
+position:fixed;
+top:0;
+left:-100%;
+
+width:80%;
+max-width:320px;
+height:100vh;
+
 background:#111827;
-padding:20px;
+
+padding:90px 25px 30px;
+
+transition:.35s;
+
+z-index:10000;
+
+overflow-y:auto;
+
 }
 
 .nav-links.active{
-display:flex;
+
+left:0;
+
 }
 
+}
+
+body.menu-open{
+    overflow:hidden;
+    height:100vh;
+}
+
+.nav-links{
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+.menu-overlay{
+
+position:fixed;
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.55);
+
+opacity:0;
+visibility:hidden;
+
+transition:.3s;
+
+z-index:9999;
+
+}
+
+.menu-overlay.active{
+
+opacity:1;
+visibility:visible;
+
+}
+
+.close-menu{
+    position:absolute;
+    top:20px;
+    right:20px;
+    width:40px;
+    height:40px;
+    border:none;
+    background:transparent;
+    color:#fff;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.close-menu:hover{
+    color:#a855f7;
 }
 
 /* ===== Premium Game Card ===== */
@@ -450,10 +523,22 @@ gap:18px;
 }
 
 .product-logo{
-    width:80px;
-    height:80px;
-    border-radius:18px;
-    object-fit:cover;
+
+width:170px;
+height:170px;
+
+object-fit:cover;
+
+border-radius:32px;
+
+display:block;
+
+margin:0 auto 25px;
+
+box-shadow:0 15px 40px rgba(124,58,237,.35);
+
+transition:.3s;
+
 }
 
 .product-header h1{
@@ -466,10 +551,40 @@ gap:18px;
 }
 
 .product-page form{
-    background:#1e293b;
-    padding:25px;
+background-image:url("/images/bg-card.jpg");
+background-size:100% auto;
+background-repeat:repeat-y;
+background-position:top center;
+
+    padding:30px;
     border-radius:20px;
+    border:2px solid #7c3aed;
+    box-shadow:0 20px 40px rgba(124,58,237,.25);
 }
+
+/*
+.product-page form::before{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:rgba(0,0,0,.18);
+
+pointer-events:none;
+
+}
+
+.product-page form>*{
+
+position:relative;
+
+z-index:2;
+
+}
+*/
 
 .product-page label{
     font-weight:600;
@@ -508,9 +623,20 @@ gap:18px;
 
 .diamond-card{
 
-    display:block;
+display:block;
+cursor:pointer;
 
-    cursor:pointer;
+background:#0f172a; /* hitam navy */
+
+border:2px solid #7c3aed; /* ungu */
+
+border-radius:18px;
+
+overflow:hidden;
+
+transition:.25s;
+
+box-shadow:none;
 
 }
 
@@ -526,11 +652,14 @@ gap:18px;
 
 }
 
-.diamond-card input:checked + .diamond-name{
+.diamond-card input:checked + .card-content,
+.diamond-card:has(input:checked){
 
-    background:#7c3aed;
+border-color:#a855f7;
 
-    color:#fff;
+background:#111827;
+
+box-shadow:0 0 25px rgba(168,85,247,.6);
 
 }
 
@@ -554,27 +683,25 @@ gap:18px;
 
 .diamond-price{
 
-    background:#182233;
+background:#111827;
 
-    padding:12px;
+border-top:2px solid #7c3aed;
 
-    text-align:center;
+padding:18px;
 
-    border-radius:0 0 14px 14px;
+font-weight:700;
 
-    border:2px solid #2b3444;
-
-    border-top:none;
-
-    color:#cbd5e1;
-
-    font-size:14px;
+color:#fff;
 
 }
 
-.diamond-card:hover{
+diamond-card:hover{
 
-    transform:translateY(-3px);
+border-color:#a855f7;
+
+transform:translateY(-4px);
+
+box-shadow:0 0 20px rgba(124,58,237,.45);
 
 }
 
@@ -999,5 +1126,174 @@ padding:30px;
 border-radius:20px;
 
 text-align:center;
+
+}
+
+.nav-divider{
+    width:100%;
+    height:1px;
+    background:#2f3650;
+    margin:18px 0;
+}
+
+.user-box{
+    width:100%;
+    background:#20283b;
+    border:1px solid #313b57;
+    border-radius:15px;
+    padding:15px;
+    text-align:center;
+}
+
+.user-avatar{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:10px;
+}
+
+.user-box h4{
+    color:#fff;
+    margin:0;
+}
+
+.user-box p{
+    color:#9ca3af;
+    font-size:13px;
+    margin-top:5px;
+    word-break:break-all;
+}
+
+.logout-btn{
+    color:#ff6b6b !important;
+    font-weight:700;
+}
+
+.sidebar-header{
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.sidebar-header h2{
+    color:#fff;
+    margin:0;
+    font-size:24px;
+}
+
+.sidebar-header p{
+    color:#9ca3af;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.sidebar-footer{
+    text-align:center;
+    color:#9ca3af;
+    font-size:13px;
+    margin-top:15px;
+}
+
+.nav-links a{
+    width:100%;
+    padding:12px 14px;
+    border-radius:12px;
+    transition:.25s;
+}
+
+.nav-links a:hover{
+    background:#7c3aed;
+    color:#fff;
+}
+
+.logout-btn{
+    background:#dc2626;
+    color:#fff !important;
+    text-align:center;
+}
+
+.logout-btn:hover{
+    background:#b91c1c !important;
+}
+
+.menu-header{
+padding:10px 0 20px;
+text-align:center;
+}
+
+.menu-header h2{
+font-size:32px;
+font-weight:700;
+margin:0;
+}
+
+.menu-header p{
+margin-top:8px;
+font-size:15px;
+color:#9ca3af;
+}
+
+.nav-links hr{
+width:100%;
+border:none;
+border-top:1px solid rgba(255,255,255,.1);
+margin:18px 0;
+}
+
+.nav-links a{
+width:100%;
+padding:14px 18px;
+border-radius:12px;
+transition:.25s;
+font-size:18px;
+}
+
+.nav-links a:hover{
+background:#7c3aed;
+transform:translateX(6px);
+}
+
+.menu-footer{
+margin-top:auto;
+padding-top:25px;
+text-align:center;
+font-size:13px;
+color:#888;
+}
+
+.product-name{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:12px;
+text-align:center;
+margin-bottom:18px;
+}
+
+.product-icon{
+width:48px;
+height:48px;
+object-fit:contain;
+}
+
+.product-name h4{
+margin:0;
+font-size:24px;
+font-weight:700;
+line-height:1.3;
+color:#fff;
+}
+
+@media(max-width:768px){
+
+.product-icon{
+width:40px;
+height:40px;
+}
+
+.product-name h4{
+font-size:18px;
+}
 
 }
