@@ -1,5 +1,6 @@
 import express from "express";
-import { sendWhatsApp, sendImage } from "../services/whatsappService.js";
+import { sendWhatsApp } from "../services/whatsappService.js";
+import { getOrdersByWhatsapp } from "../services/database.js";
 
 const router = express.Router();
 
@@ -10,50 +11,158 @@ router.post("/webhook", async (req, res) => {
 
     console.log(req.body);
 
-    if (pesan === "1") {
 
-        await sendWhatsApp(sender,
-`💙 *Pembayaran DANA*
+    // ambil order terakhir customer
+    const orders = await getOrdersByWhatsapp(sender);
 
-Nomor : 083172927610
-Nama : Rahmad Rizki
+    const order = orders[0];
 
-Silakan transfer sesuai harga produk.
-Setelah transfer kirim bukti pembayaran ya Kak 😊`);
+
+    if (!order) {
+
+        await sendWhatsApp(
+            sender,
+`❌ Pesanan tidak ditemukan.
+
+Silakan lakukan pemesanan terlebih dahulu melalui RajaTopUp.`
+        );
+
+        return res.send("OK");
 
     }
 
-    else if (pesan === "2") {
 
-        await sendImage(
-            sender,
-            `${process.env.APP_URL}/payment/qris.jpg`,
-`📱 *Pembayaran QRIS*
+    // ambil harga dari product
+    const hargaText = order.product.match(/Rp([\d.]+)/);
 
-Silakan scan QRIS di atas.
+    let harga = 0;
 
-⚠️ Biaya layanan QRIS sebesar *0,7%* akan ditambahkan ke total pembayaran.
+    if (hargaText) {
 
-Setelah pembayaran berhasil, kirim bukti transfer ya Kak 😊`
+        harga = Number(
+            hargaText[1].replace(/\./g,"")
         );
 
     }
 
+
+
+    if (pesan === "1") {
+
+
+        await sendWhatsApp(
+            sender,
+`💙 *Pembayaran DANA*
+
+Invoice : ${order.invoice}
+
+Game : ${order.game}
+
+Produk : ${order.product}
+
+Total Pembayaran :
+Rp${harga.toLocaleString("id-ID")}
+
+Nomor : 083172927610
+Nama : Rahmad Rizki
+
+Silakan transfer sesuai total pembayaran.
+
+Setelah transfer kirim bukti pembayaran ya Kak 😊`
+        );
+
+
+    }
+
+
+
+    else if (pesan === "2") {
+
+
+        const fee = Math.floor(harga * 0.007);
+
+        const total = harga + fee;
+
+
+        await sendWhatsApp(
+            sender,
+`📱 *Pembayaran QRIS*
+
+Invoice : ${order.invoice}
+
+Game : ${order.game}
+
+Produk : ${order.product}
+
+Harga Produk :
+Rp${harga.toLocaleString("id-ID")}
+
+Biaya QRIS (0,7%) :
+Rp${fee.toLocaleString("id-ID")}
+
+*Total Pembayaran :*
+Rp${total.toLocaleString("id-ID")}
+
+
+Silakan buka QRIS:
+
+${process.env.APP_URL}/payment/qris.jpg
+
+
+Setelah pembayaran berhasil kirim bukti pembayaran ya Kak 😊`
+        );
+
+
+    }
+
+
+
     else if (pesan === "3") {
 
-        await sendWhatsApp(sender,
+
+        await sendWhatsApp(
+            sender,
 `🏦 *Pembayaran SeaBank*
+
+Invoice : ${order.invoice}
+
+Game : ${order.game}
+
+Produk : ${order.product}
+
+Total Pembayaran :
+Rp${harga.toLocaleString("id-ID")}
 
 Nomor Rekening : 901719133159
 Nama : Nuraini
 
-Silakan transfer sesuai harga produk.
-Setelah transfer kirim bukti pembayaran ya Kak 😊`);
+Silakan transfer sesuai total pembayaran.
+
+Setelah transfer kirim bukti pembayaran ya Kak 😊`
+        );
+
 
     }
+
+
+    else {
+
+        await sendWhatsApp(
+            sender,
+`❌ Pilihan tidak tersedia.
+
+Balas:
+1️⃣ DANA
+2️⃣ QRIS
+3️⃣ SeaBank`
+        );
+
+    }
+
 
     res.send("OK");
 
 });
+
 
 export default router;
