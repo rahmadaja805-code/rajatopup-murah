@@ -49,7 +49,7 @@ export async function sendImage(target, image, caption){
         body: new URLSearchParams({
           target,
           url: image,
-          caption
+        message: caption
         })
       }
     );
