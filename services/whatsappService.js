@@ -39,8 +39,6 @@ export async function sendImage(target, image, caption){
 
   try{
 
-console.log("IMAGE URL:", image);
-
     const response = await fetch(
       "https://api.fonnte.com/send",
       {
@@ -50,8 +48,7 @@ console.log("IMAGE URL:", image);
         },
         body: new URLSearchParams({
           target,
-          url: image,
-          filename: "qris.jpg",
+          file: image,
           message: caption
         })
       }
@@ -65,10 +62,7 @@ console.log("IMAGE URL:", image);
 
   }catch(err){
 
-    console.error(
-      "Image Error:",
-      err.message
-    );
+    console.error("Image Error:", err.message);
 
   }
 
