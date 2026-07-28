@@ -35,22 +35,28 @@ export async function sendWhatsApp(target, message){
 
 }
 
+import fetch from "node-fetch";
+import FormData from "form-data";
+
 export async function sendImage(target, image, caption){
 
   try{
 
+    const data = new FormData();
+
+    data.append("target", target);
+    data.append("message", caption);
+    data.append("url", image);
+    data.append("filename", "qris.jpg");
+
     const response = await fetch(
       "https://api.fonnte.com/send",
       {
-        method:"POST",
+        method: "POST",
         headers:{
-          "Authorization": process.env.FONNTE_TOKEN
+          Authorization: process.env.FONNTE_TOKEN
         },
-        body: new URLSearchParams({
-          target,
-          file: image,
-          message: caption
-        })
+        body: data
       }
     );
 
@@ -62,7 +68,7 @@ export async function sendImage(target, image, caption){
 
   }catch(err){
 
-    console.error("Image Error:", err.message);
+    console.error(err);
 
   }
 
