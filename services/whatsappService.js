@@ -42,23 +42,30 @@ export async function sendImage(target, image, caption){
     const response = await fetch(
       "https://api.fonnte.com/send",
       {
-        method: "POST",
+        method:"POST",
         headers:{
-          Authorization: process.env.FONNTE_TOKEN
+          "Authorization": process.env.FONNTE_TOKEN
         },
         body: new URLSearchParams({
           target,
-          url: image,
-        message: caption
+          file: image,
+          message: caption
         })
       }
     );
 
-    return await response.json();
+    const result = await response.json();
+
+    console.log("Fonnte Image:", result);
+
+    return result;
 
   }catch(err){
 
-    console.error(err);
+    console.error(
+      "Image Error:",
+      err.message
+    );
 
   }
 
