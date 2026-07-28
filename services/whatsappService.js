@@ -39,6 +39,8 @@ export async function sendImage(target, image, caption){
 
   try{
 
+console.log("IMAGE URL:", image);
+
     const response = await fetch(
       "https://api.fonnte.com/send",
       {
