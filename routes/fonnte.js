@@ -2,17 +2,15 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/webhook", (req, res) => {
-    res.send("Webhook Fonnte Aktif ✅");
-});
+router.all("/webhook", (req, res) => {
 
-router.post("/webhook", (req, res) => {
-    console.log("=== WEBHOOK FONNTE ===");
-    console.log(req.body);
+    console.log("===== FONNTE WEBHOOK =====");
+    console.log("METHOD:", req.method);
+    console.log("HEADERS:", req.headers);
+    console.log("BODY:", req.body);
 
-    res.status(200).json({
-        success: true
-    });
+    res.status(200).send("OK");
+
 });
 
 export default router;
