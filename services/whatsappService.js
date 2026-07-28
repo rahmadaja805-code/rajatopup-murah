@@ -50,7 +50,6 @@ export async function sendImage(target, image, caption){
           target,
           url: image,
           message: caption
-          type: "image"
         })
       }
     );
