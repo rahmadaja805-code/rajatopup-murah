@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import FormData from "form-data";
 
 export async function sendWhatsApp(target, message){
 
@@ -34,9 +35,6 @@ export async function sendWhatsApp(target, message){
   }
 
 }
-
-import fetch from "node-fetch";
-import FormData from "form-data";
 
 export async function sendImage(target, image, caption){
 
