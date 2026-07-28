@@ -222,39 +222,18 @@ document.getElementById("orderForm").addEventListener("submit", async function(e
         return;
     }
 
-const hargaText = data.product.match(/Rp([\d.]+)/);
+const pesan = `Halo Admin RajaTopUp 👋
 
-const harga = Number(
-    hargaText[1].replace(/\./g,"")
+Saya ingin melakukan top up.
+
+Silakan proses pesanan saya.
+
+Terima kasih 🙏`;
+
+window.open(
+    "https://wa.me/<%= storeWhatsapp %>?text=" + encodeURIComponent(pesan),
+    "_blank"
 );
-
-const fee = Math.floor(harga * 0.007);
-
-const total = harga + fee;
-
-const pesan = `Halo Admin RajaTopUp
-
-Invoice : ${result.order.invoice}
-
-Game : ${data.game}
-Produk : ${data.product}
-
-Harga Produk : Rp${harga.toLocaleString("id-ID")}
-
-Biaya Layanan QRIS (0,7%) : Rp${fee.toLocaleString("id-ID")}
-
-Total Pembayaran : Rp${total.toLocaleString("id-ID")}
-
-User ID : ${data.userId}
-Zone ID : ${data.zoneId}
-No WA : ${data.customerWa}
-
-Saya ingin melakukan top up, mohon proses pesanan saya. Terima kasih.`;
-
-    window.open(
-        "https://wa.me/<%= storeWhatsapp %>?text=" + encodeURIComponent(pesan),
-        "_blank"
-    );
 
 });
 

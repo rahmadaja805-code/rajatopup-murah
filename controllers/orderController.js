@@ -1,3 +1,4 @@
+import { sendWhatsApp } from "../services/whatsappService.js";
 import { saveOrder } from "../services/database.js";
 import crypto from "crypto";
 
@@ -53,7 +54,60 @@ export async function createOrder(req, res) {
     // simpan langsung ke PostgreSQL
     await saveOrder(order);
 
+// kirim pesan ke pembeli
+const customerMessage = `Halo Kak 👋
 
+Pesanan RajaTopUp sudah dibuat ✅
+
+Invoice : ${order.invoice}
+
+🎮 Game : ${order.game}
+📦 Produk : ${order.product}
+
+🆔 User ID : ${order.userId}
+Zone ID : ${order.zoneId || "-"}
+
+Silakan pilih metode pembayaran:
+
+1️⃣ DANA
+2️⃣ QRIS
+3️⃣ SeaBank
+
+Balas angka sesuai metode pembayaran.
+
+Terima kasih 🙏
+
+👑 RajaTopUp
+Fast • Secure • Trusted`;
+
+
+await sendWhatsApp(
+  order.customerWa,
+  customerMessage
+);
+
+
+// kirim notifikasi admin kedua
+const adminMessage = `🔔 PESANAN BARU RAJATOPUP
+
+Invoice : ${order.invoice}
+
+🎮 Game : ${order.game}
+📦 Produk : ${order.product}
+
+🆔 User ID : ${order.userId}
+Zone ID : ${order.zoneId || "-"}
+
+📱 WA Pembeli : ${order.customerWa}
+
+Status:
+MENUNGGU PEMBAYARAN`;
+
+
+await sendWhatsApp(
+  process.env.FONNTE_ADMIN_WA,
+  adminMessage
+);
 
     return res.json({
 
