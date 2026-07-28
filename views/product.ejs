@@ -222,13 +222,7 @@ document.getElementById("orderForm").addEventListener("submit", async function(e
         return;
     }
 
-const pesan = `Halo Admin RajaTopUp 👋
-
-Saya ingin melakukan top up.
-
-Silakan proses pesanan saya.
-
-Terima kasih 🙏`;
+const pesan = `1 atau 2 atau 3 pilih salah satu`;
 
 window.open(
     "https://wa.me/<%= storeWhatsapp %>?text=" + encodeURIComponent(pesan),

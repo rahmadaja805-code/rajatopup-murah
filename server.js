@@ -9,6 +9,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import jwt from "jsonwebtoken";
+import fonnteRoutes from "./routes/fonnte.js";
 
 import publicRoutes from "./routes/public.js";
 import adminRoutes from "./routes/admin.js";
@@ -73,6 +74,7 @@ app.use("/", publicRoutes);
 app.use("/", authRoutes);
 app.use("/api", apiRoutes);
 app.use("/admin", adminRoutes);
+app.use("/api/fonnte", fonnteRoutes);
 
 app.get("/health", (req, res) => {
   res.json({
