@@ -42,23 +42,21 @@ export async function sendImage(target, image, caption){
 
   try{
 
-    const data = new FormData();
+const data = new FormData();
 
-    data.append("target", target);
-    data.append("message", caption);
-    data.append("url", image);
-    data.append("filename", "qris.jpg");
+data.append("target", target);
+data.append("message", caption);
+data.append("url", image);
+data.append("filename", "qris.jpg");
 
-    const response = await fetch(
-      "https://api.fonnte.com/send",
-      {
-        method: "POST",
-        headers:{
-          Authorization: process.env.FONNTE_TOKEN
-        },
-        body: data
-      }
-    );
+const response = await fetch("https://api.fonnte.com/send", {
+  method: "POST",
+  headers: {
+    ...data.getHeaders(),
+    Authorization: process.env.FONNTE_TOKEN
+  },
+  body: data
+});
 
     const result = await response.json();
 
