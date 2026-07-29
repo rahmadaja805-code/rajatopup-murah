@@ -17,6 +17,58 @@ router.post("/webhook", async (req, res) => {
 
     const order = orders[0];
 
+if (!order) {
+    ...
+}
+
+const sekarang = new Date();
+
+if (
+    order.status === "MENUNGGU_PEMBAYARAN" &&
+    sekarang > new Date(order.expired_at)
+) {
+
+    await expireOrder(order.invoice);
+
+    await sendWhatsApp(
+        sender,
+`⏰ Invoice ${order.invoice} telah kedaluwarsa.
+
+Silakan checkout ulang untuk membuat transaksi baru.`
+    );
+
+    return res.send("OK");
+}
+
+if (order.status === "EXPIRED") {
+
+    await sendWhatsApp(
+        sender,
+        "❌ Invoice sudah kedaluwarsa. Silakan checkout ulang."
+    );
+
+    return res.send("OK");
+}
+
+if (order.status === "SELESAI") {
+
+    await sendWhatsApp(
+        sender,
+        "✅ Pesanan ini sudah selesai."
+    );
+
+    return res.send("OK");
+}
+
+if (order.status === "DIBATALKAN") {
+
+    await sendWhatsApp(
+        sender,
+        "❌ Pesanan telah dibatalkan."
+    );
+
+    return res.send("OK");
+}
 
     if (!order) {
 

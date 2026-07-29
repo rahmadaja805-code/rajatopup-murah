@@ -85,7 +85,8 @@ export async function saveOrder(order){
       user_id,
       zone_id,
       customer_wa,
-      status
+      status,
+      expired_at
     )
     VALUES
     ($1,$2,$3,$4,$5,$6,$7)
@@ -367,3 +368,15 @@ export async function getOrdersByWhatsapp(whatsapp){
 
 }
 
+export async function expireOrder(invoice){
+
+    await pool.query(
+        `
+        UPDATE orders
+        SET status='EXPIRED'
+        WHERE invoice=$1
+        `,
+        [invoice]
+    );
+
+}
