@@ -1,3 +1,4 @@
+import { getIntent } from "../services/intent.js";
 import express from "express";
 import { sendWhatsApp } from "../services/whatsappService.js";
 import {
@@ -11,6 +12,8 @@ router.post("/webhook", async (req, res) => {
 
     const sender = req.body.sender;
     const pesan = (req.body.message || "").trim();
+
+const intent = getIntent(pesan);
 
     console.log(req.body);
 
