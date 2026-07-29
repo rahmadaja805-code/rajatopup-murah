@@ -18,7 +18,6 @@ router.post("/webhook", async (req, res) => {
     const order = orders[0];
 
 if (!order) {
-    ...
 }
 
 const sekarang = new Date();
