@@ -1,6 +1,9 @@
 import express from "express";
 import { sendWhatsApp } from "../services/whatsappService.js";
-import { getOrdersByWhatsapp } from "../services/database.js";
+import {
+    getOrdersByWhatsapp,
+    expireOrder
+} from "../services/database.js";
 
 const router = express.Router();
 
@@ -11,64 +14,11 @@ router.post("/webhook", async (req, res) => {
 
     console.log(req.body);
 
-
-    // ambil order terakhir customer
+    // Ambil order terakhir customer
     const orders = await getOrdersByWhatsapp(sender);
-
     const order = orders[0];
 
-if (!order) {
-}
-
-const sekarang = new Date();
-
-if (
-    order.status === "MENUNGGU_PEMBAYARAN" &&
-    sekarang > new Date(order.expired_at)
-) {
-
-    await expireOrder(order.invoice);
-
-    await sendWhatsApp(
-        sender,
-`⏰ Invoice ${order.invoice} telah kedaluwarsa.
-
-Silakan checkout ulang untuk membuat transaksi baru.`
-    );
-
-    return res.send("OK");
-}
-
-if (order.status === "EXPIRED") {
-
-    await sendWhatsApp(
-        sender,
-        "❌ Invoice sudah kedaluwarsa. Silakan checkout ulang."
-    );
-
-    return res.send("OK");
-}
-
-if (order.status === "SELESAI") {
-
-    await sendWhatsApp(
-        sender,
-        "✅ Pesanan ini sudah selesai."
-    );
-
-    return res.send("OK");
-}
-
-if (order.status === "DIBATALKAN") {
-
-    await sendWhatsApp(
-        sender,
-        "❌ Pesanan telah dibatalkan."
-    );
-
-    return res.send("OK");
-}
-
+    // Jika tidak ada order
     if (!order) {
 
         await sendWhatsApp(
@@ -82,8 +32,63 @@ Silakan lakukan pemesanan terlebih dahulu melalui RajaTopUp.`
 
     }
 
+    // Cek expired
+    const sekarang = new Date();
 
-    // ambil harga dari product
+    if (
+        order.status === "MENUNGGU_PEMBAYARAN" &&
+        order.expired_at &&
+        sekarang > new Date(order.expired_at)
+    ) {
+
+        await expireOrder(order.invoice);
+
+        await sendWhatsApp(
+            sender,
+`⏰ Invoice *${order.invoice}* telah kedaluwarsa.
+
+Silakan checkout ulang untuk membuat transaksi baru.`
+        );
+
+        return res.send("OK");
+
+    }
+
+    // Status lain
+    if (order.status === "EXPIRED") {
+
+        await sendWhatsApp(
+            sender,
+            "❌ Invoice sudah kedaluwarsa. Silakan checkout ulang."
+        );
+
+        return res.send("OK");
+
+    }
+
+    if (order.status === "SELESAI") {
+
+        await sendWhatsApp(
+            sender,
+            "✅ Pesanan ini sudah selesai."
+        );
+
+        return res.send("OK");
+
+    }
+
+    if (order.status === "DIBATALKAN") {
+
+        await sendWhatsApp(
+            sender,
+            "❌ Pesanan telah dibatalkan."
+        );
+
+        return res.send("OK");
+
+    }
+
+    // Ambil harga
     const hargaText = order.product.match(/Rp([\d.]+)/);
 
     let harga = 0;
@@ -91,15 +96,13 @@ Silakan lakukan pemesanan terlebih dahulu melalui RajaTopUp.`
     if (hargaText) {
 
         harga = Number(
-            hargaText[1].replace(/\./g,"")
+            hargaText[1].replace(/\./g, "")
         );
 
     }
 
-
-
+    // DANA
     if (pesan === "1") {
-
 
         await sendWhatsApp(
             sender,
@@ -122,18 +125,13 @@ Silakan transfer sesuai total pembayaran.
 Setelah transfer kirim bukti pembayaran ya Kak 😊`
         );
 
-
     }
 
-
-
+    // QRIS
     else if (pesan === "2") {
 
-
         const fee = Math.floor(harga * 0.007);
-
         const total = harga + fee;
-
 
         await sendWhatsApp(
             sender,
@@ -154,22 +152,17 @@ Rp${fee.toLocaleString("id-ID")}
 *Total Pembayaran :*
 Rp${total.toLocaleString("id-ID")}
 
-
 Silakan buka QRIS:
 
 ${process.env.APP_URL}/payment/qris.jpg
 
-
 Setelah pembayaran berhasil kirim bukti pembayaran ya Kak 😊`
         );
 
-
     }
 
-
-
+    // SeaBank
     else if (pesan === "3") {
-
 
         await sendWhatsApp(
             sender,
@@ -192,10 +185,9 @@ Silakan transfer sesuai total pembayaran.
 Setelah transfer kirim bukti pembayaran ya Kak 😊`
         );
 
-
     }
 
-
+    // Selain 1,2,3
     else {
 
         await sendWhatsApp(
@@ -210,10 +202,8 @@ Balas:
 
     }
 
-
     res.send("OK");
 
 });
-
 
 export default router;
